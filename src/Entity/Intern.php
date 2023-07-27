@@ -37,12 +37,12 @@ class Intern
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $phone = null;
 
-    #[ORM\ManyToMany(targetEntity: session::class, inversedBy: 'interns')]
-    private Collection $session;
+    #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'interns')]
+    private Collection $sessions;
 
     public function __construct()
     {
-        $this->session = new ArrayCollection();
+        $this->sessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,17 +135,17 @@ class Intern
     }
 
     /**
-     * @return Collection<int, session>
+     * @return Collection<int, sessions>
      */
-    public function getSession(): Collection
+    public function getSessions(): Collection
     {
-        return $this->session;
+        return $this->sessions;
     }
 
     public function addSession(Session $session): static
     {
-        if (!$this->session->contains($session)) {
-            $this->session->add($session);
+        if (!$this->sessions->contains($session)) {
+            $this->sessions->add($session);
         }
 
         return $this;
@@ -153,9 +153,14 @@ class Intern
 
     public function removeSession(Session $session): static
     {
-        $this->session->removeElement($session);
+        $this->sessions->removeElement($session);
 
         return $this;
     }
+    function __toString()  
+    {
+        return $this->name." ".$this->familyName;       
+    }
 }
+
 

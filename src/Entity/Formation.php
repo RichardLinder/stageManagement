@@ -88,4 +88,8 @@ class Formation
 
         return $this;
     }
+    function __toString()  
+    {
+        return $this->titleFormation;        
+    }
 }

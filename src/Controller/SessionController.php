@@ -5,13 +5,15 @@ namespace App\Controller;
 use App\Entity\Session;
 use App\Entity\Formation;
 use App\Entity\Programme;
+use App\Form\SessionType;
+use App\Form\FormationType;
 use App\Repository\SessionRepository;
+use App\Repository\FormationRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\FormationRepository;
 
 
 class SessionController extends AbstractController
@@ -39,7 +41,10 @@ class SessionController extends AbstractController
             'session' => $session
             ]
         );
-    }    
+    }
+    
+    // fonction qui donne la liste des formation
+
     #[Route('/formation', name: 'app_formation')]
     public function formation(FormationRepository $formationRepository): Response
     {
@@ -48,29 +53,65 @@ class SessionController extends AbstractController
             'formations' => $formations
         ]);
     }
+    // fonction qui donne les détaile d'une formation en ayant pour parametre l'id de la formation
     #[Route('/formation/{id}/show', name: 'show_formation')]
     public function showformation(Formation $formation): Response 
     {
         return $this->render
         (
-            'formation\showformation.htlm.twig' ,           [
-            'formation' => $formation
+            'formation\showformation.htlm.twig' ,           
+            [
+                'formation' => $formation
             ]
         );
     }
 
-
-    #[Route('/formation', name: 'app_formation')]
-    public function new(Request $request): Response
+    #[Route('/formation/newFormation', name: 'newFormation')]
+    public function newformation(Request $request, EntityManagerInterface $formationManager): Response
     {
-        $task = new Task();
-        // ...
+        $formation = new Formation();
+        $form = $this->createForm(FormationType::class, $formation);
+        $form->handleRequest($request);
 
-        $form = $this->createForm(TaskType::class, $task);
+        if ($form->isSubmitted()&&$form->isValid()) 
+        {
+            $formation= $form->getData();
+            $formationManager->persist($formation);
+            $formationManager->flush();
 
-        return $this->render('task/new.html.twig', [
-            'form' => $form,
-        ]);
+
+        }
+        return $this->render
+        (
+            'formation/newFormation.htlm.twig', 
+            [
+                'newFormation' => $form,
+            ]
+        );
     }
-  
+    #[Route('/session/newSession', name: 'newSession')]
+    public function newSession(Request $request, EntityManagerInterface $sessionManager ): Response
+    {
+        $session = new Session();
+        $form = $this->createForm(SessionType::class, $session);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()&&$form->isValid()) 
+        {
+            $session= $form->getData();
+            $sessionManager->persist($session);
+            $sessionManager->flush();
+
+
+        }
+
+
+        return $this->render
+        (
+            'session/newSession.htlm.twig', 
+            [
+                'newSession' => $form,
+            ]
+        );
+    }
 }

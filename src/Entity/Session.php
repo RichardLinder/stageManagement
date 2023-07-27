@@ -31,7 +31,7 @@ class Session
     #[ORM\OneToMany(mappedBy: 'session', targetEntity: Programe::class)]
     private Collection $programes;
 
-    #[ORM\ManyToMany(targetEntity: Intern::class, mappedBy: 'Session')]
+    #[ORM\ManyToMany(targetEntity: Intern::class, mappedBy: 'sessions')]
     private Collection $interns;
 
     public function __construct()
