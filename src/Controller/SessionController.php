@@ -17,7 +17,7 @@ use App\Repository\FormationRepository;
 class SessionController extends AbstractController
 {
 
-
+// fonction qui donne la liste des session
     #[Route('/session', name: 'app_session')]
     public function index(SessionRepository $sessionRepository): Response
     {
@@ -27,10 +27,11 @@ class SessionController extends AbstractController
         ]);
     }
 
+    // fonction qui donne les détaile d'une session en ayant pour parametre l'id de la session
+
     #[Route('/session/{id}/show', name: 'show_session')]
-    public function showSession(SessionRepository $sessionRepository,$id): Response 
-    {
-        $session = $sessionRepository->findOneBy(['id'=> $id]); 
+    public function showSession(Session $session): Response 
+    { 
         return $this->render
         (
             'session/showSession.html.twig', 
@@ -48,15 +49,28 @@ class SessionController extends AbstractController
         ]);
     }
     #[Route('/formation/{id}/show', name: 'show_formation')]
-    public function showformation(formationRepository $formationRepository,$id): Response 
+    public function showformation(Formation $formation): Response 
     {
-        $formation = $formationRepository->findOneBy(['id'=> $id]); 
         return $this->render
         (
             'formation\showformation.htlm.twig' ,           [
             'formation' => $formation
             ]
         );
+    }
+
+
+    #[Route('/formation', name: 'app_formation')]
+    public function new(Request $request): Response
+    {
+        $task = new Task();
+        // ...
+
+        $form = $this->createForm(TaskType::class, $task);
+
+        return $this->render('task/new.html.twig', [
+            'form' => $form,
+        ]);
     }
   
 }
