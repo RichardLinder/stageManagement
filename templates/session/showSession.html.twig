@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %} {# Héritage de la view de base #}
+
+{% block title %}Détails de la session{% endblock %}
+
+{% block body %}
+    <h1>Détails de la session</h1>
+    <p>
+       Date de début de Session :{{ session.startingDate | date("d/m/Y") }} <br/>
+       Date de fin de Session : {{ session.endDate | date("d/m/Y")}} <br/>
+    </p>
+{% endblock %}

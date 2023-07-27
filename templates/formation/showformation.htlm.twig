@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %} {# Héritage de la view de base #}
+
+{% block title %}Détails de la formation{% endblock %}
+
+{% block body %}
+    <h1>Détails de la formation</h1>
+    <p>
+        Titre de la formation :{{formation.titleFormation}}
+    </p>
+    Description de la, formation 
+
+    <p>
+        {{formation.description}}
+
+    </p>
+{% endblock %}

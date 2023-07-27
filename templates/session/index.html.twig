@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des sessions{% endblock %}
+
+{% block body %}
+    <h1>Liste des sessions</h1>
+    
+    <table class="table table-hover">
+        <thead>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Nombre deplace maximum </th>
+        </thead>
+        <tbody>
+        {% for session in sessions %}
+        <tr>            
+            <td>{{ session.startingDate | date("d/m/Y") }}</td>
+            <td>{{ session.endDate | date("d/m/Y") }}</td>
+            <td>{{ session.maxParticipant }}</td>
+            <td><a href="{{ path('show_session', {'id': session.id})}}">voir détaille</a>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
