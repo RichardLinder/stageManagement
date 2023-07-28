@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des stagiaires{% endblock %}
+
+{% block body %}
+    <h1>Liste des stagiaires</h1>
+
+    {% for intern in interns %}
+        <a href="{{ path('showIntern', {'id': intern.id}) }}">{{ intern }}</a> <br/>
+        <a href="{{ path('newIntern')}}">Ajout</a> 
+        <a href="{{ path('deleteIntern', {'id': intern.id}) }}">Supression</a><br/>
+        <a href="{{ path('editIntern', {'id': intern.id}) }}">modfier</a> 
+      
+    {% endfor %}
+    
+{% endblock %}

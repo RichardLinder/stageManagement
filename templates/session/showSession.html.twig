@@ -8,4 +8,10 @@
        Date de début de Session :{{ session.startingDate | date("d/m/Y") }} <br/>
        Date de fin de Session : {{ session.endDate | date("d/m/Y")}} <br/>
     </p>
+
+    <a href="{{ path('editSession', {'id': session.id}) }}">Modifier session</a>
+
+    <a href="{{ path('deleteSession', {'id': session.id}) }}">Suprimé la session</a>
+
+
 {% endblock %}

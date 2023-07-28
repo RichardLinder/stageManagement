@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %} {# Héritage de la view de base #}
+
+{% block title %}Détail d'un stagiaire{% endblock %}
+
+{% block body %}
+    <h1>Fiche du stagiaire {{ intern }}</h1>
+    <p>
+       Date de Naissance {{ intern.birthDate | date("d.m.Y") }} <br/>
+       Sexe : {% if intern.gender | length > 0 %} <br/> 
+       {{ intern.gender }} <br/>
+       {% else %}
+       Le stagiaire n'a pas renseigné son sexe.<br/> 
+       {% endif %} 
+
+       Ville : {{ intern.town }} <br/>
+       emaile : {{ intern.email }} <br/>
+       Téléphone :  {% if intern.phone | length > 0 %} <br/> 
+                    {{ intern.phone }} <br/>
+                    {% else %}
+                    Le stagiaire n'a pas renseigné de numéros de téléphone
+                    {% endif %} 
+    </p>
+    {% endblock %}

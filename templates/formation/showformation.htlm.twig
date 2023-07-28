@@ -13,4 +13,9 @@
         {{formation.description}}
 
     </p>
+
+    <a href="{{ path('editFormation', {'id': session.id}) }}">Modifier formation</a>
+
+    <a href="{{ path('deleteFormation', {'id': session.id}) }}">Suprimé la formation</a>
+
 {% endblock %}

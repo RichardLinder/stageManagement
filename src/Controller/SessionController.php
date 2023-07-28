@@ -19,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SessionController extends AbstractController
 {
 
+//----------------------------------------------------------------------------------------- affichage
+
 // fonction qui donne la liste des session
     #[Route('/session', name: 'app_session')]
     public function index(SessionRepository $sessionRepository): Response
@@ -65,6 +67,9 @@ class SessionController extends AbstractController
             ]
         );
     }
+//-----------------------------------------------------------------------------------------creation
+
+// fonction de creation de nouvelle entité de donné
 
     #[Route('/formation/newFormation', name: 'newFormation')]
     public function newformation(Request $request, EntityManagerInterface $formationManager): Response
@@ -113,5 +118,89 @@ class SessionController extends AbstractController
                 'newSession' => $form,
             ]
         );
+    }
+    // #[Route('/session/{id}/editFormation', name: 'editFormation')]
+    // function editFormation((Session $formation , Request $request, EntityManagerInterface $entityManager)) : Returntype {
+        
+    // }
+    #[Route('/session/{id}/editSession', name: 'editSession')]
+    function editSession(Session $session, Request $request, EntityManagerInterface $entityManager) : Returntype {
+        
+        $form = $this->createForm(SessionType::class, $session);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            $session = $form->getData();
+            $entityManager->persist($session);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_session');
+        }
+
+        return $this->render
+        (
+            'session/newSession.htlm.twig', 
+            [
+                'newSession' => $form,
+            ]
+        );
+        
+    }
+
+    #[Route('/session/{id}/editFormation', name: 'editFormation')]
+    function editFormation(Formation $formation, Request $request, EntityManagerInterface $entityManager) : Returntype {
+        
+        $form = $this->createForm(FormationType::class, $formation);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            $formation = $form->getData();
+            $entityManager->persist($formation);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_formation');
+        }
+
+        return $this->render
+        (
+            'session/newSession.htlm.twig', 
+            [
+                'newSession' => $form,
+            ]
+        );
+        
+    }
+
+//----------------------------------------------------------------------------------------- suppression
+
+
+
+    #[Route('/session/{id}/delete', name: 'deleteSession')]
+    public function deleteSession(Session $session, EntityManagerInterface $entityManager) 
+    {
+        // Prépare la suppression d'une instance de l'objet 
+
+        $entityManager->remove($session);
+
+        // execucte le changement dans l'objet ( dans ce cas supression ) 
+        $entityManager->flush();
+        // retidirege vers la liste des ssesion
+        return $this->redirectToRoute('app_session');
+    }
+
+    
+    #[Route('/session/{id}/delete', name: 'deleteFormation')]
+    public function deleteFormation(Formation $formation, EntityManagerInterface $entityManager) 
+    {
+        // Prépare la suppression d'une instance de l'objet 
+
+        $entityManager->remove($formation);
+
+        // execucte le changement dans l'objet ( dans ce cas supression ) 
+        $entityManager->flush();
+        // retidirege vers la liste des ssesion
+        return $this->redirectToRoute('app_formation');
     }
 }
